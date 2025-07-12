@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pokémon {{ caught|yesno:"Caught,Missed" }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+</head>
+
+<body class="{% if caught %}bg-gradient-to-br from-green-100 via-yellow-100 to-blue-100{% else %}bg-gradient-to-br from-red-100 via-pink-100 to-yellow-100{% endif %} min-h-screen font-sans antialiased relative">
+
+  <!-- Navbar -->
+  <nav class="bg-red-600 p-4 text-white flex justify-between items-center shadow-lg">
+    <a href="/" class="text-4xl font-bold tracking-wide">PokéWorld</a>
+    <div>
+      <a href="/pokedex" class="text-black text-xl hover:underline mx-3">PokéDex</a>
+      <a href="/catch" class="text-black text-xl hover:underline mx-3 font-bold">PokéCatcher</a>
+      <a href="/leaderboard" class="text-black text-xl hover:underline mx-2">LeaderBoard</a>
+      <a href="/logout" class="text-black text-xl hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Section -->
+  <div class="container mx-auto px-6 py-16 text-center">
+    <h2 class="text-5xl font-extrabold mb-8 animate-pop">
+      {% if caught %}
+        <span class="text-green-600">You caught</span> <span class="text-blue-700">{{ name }}</span>!
+      {% else %}
+        <span class="text-red-600">Missed!</span> It was <span class="text-blue-700">{{ name }}</span>
+      {% endif %}
+    </h2>
+
+    <!-- Pokémon Image -->
+    <div class="relative max-w-xs mx-auto bg-white rounded-xl shadow-2xl p-6 border-4 border-blue-300 animate-pop">
+      <img src="{{ image_url }}" alt="{{ name }}" class="w-64 h-64 object-contain mx-auto rounded-md" />
+      <div class="absolute inset-0 rounded-xl bg-black opacity-5 pointer-events-none"></div>
+    </div>
+
+    <div class="mt-10 flex justify-center space-x-6 animate-pop">
+        {% if cry_url %}
+        <button onclick="document.getElementById('cryAudio').play()" 
+            class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-extrabold text-lg px-8 py-3 rounded-full shadow-2xl transform transition hover:scale-105">
+            🔊 Hear the Cry!
+        </button>
+        <audio id="cryAudio" src="{{ cry_url }}"></audio>
+        {% endif %}
+
+        <a href="/pokedex/{{ name|lower }}"
+            class="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-900 hover:to-gray-800 text-white font-extrabold text-lg px-8 py-3 rounded-full shadow-2xl transform transition hover:scale-105">
+            📖 Know More
+        </a>
+        </div>
+
+        <!-- Try Again Button -->
+        <div class="mt-12 animate-pop text-center">
+        <a href="/catch/" 
+            class="bg-gradient-to-r from-red-700 to-yellow-600 hover:from-red-800 hover:to-yellow-700 
+            text-white font-extrabold text-xl px-10 py-4 rounded-full 
+            shadow-2xl transition transform hover:scale-105 border-4 border-white
+            ">
+            🎯 Try Another!
+        </a>
+        </div>
+
+  <!-- Pokéball Decoration -->
+  <div class="fixed bottom-5 right-5 opacity-40 pointer-events-none">
+    <img src="https://img.icons8.com/color/96/pokeball-2.png" class="w-16 h-16 animate-spin-slow" />
+  </div>
+
+</body>
+</html>

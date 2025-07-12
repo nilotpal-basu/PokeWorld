@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PokéDex</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gradient-to-r from-red-100 to-yellow-100 min-h-screen font-sans antialiased">
+
+  <!-- Navbar -->
+  <nav class="bg-red-600 p-4 text-white flex justify-between items-center shadow-md">
+    <a href="/" class="text-4xl font-bold">PokéWorld</a>
+    <div>
+      <a href="/pokedex" class="text-black text-xl hover:underline mx-3">PokéDex</a>
+      <a href="/catch" class="text-black text-xl hover:underline mx-3">PokéCatcher</a>
+      <a href="/leaderboard" class="text-black text-xl hover:underline mx-2">LeaderBoard</a>
+      <a href="/logout" class="text-black text-xl hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container mx-auto px-4 py-12">
+    <div class="bg-white rounded-2xl shadow-xl p-10 flex flex-col md:flex-row gap-10 items-center transition transform hover:scale-[1.01]">
+
+      <!-- Left: Pokémon Image -->
+      <div class="md:w-1/2 flex justify-center items-center">
+        <div class="bg-gradient-to-br from-gray-800 via-gray-900 to-black p-6 rounded-2xl shadow-2xl border-4 border-gray-700 backdrop-blur-md w-96 h-96 flex justify-center items-center relative">
+
+            <!-- Simulated glowing power light -->
+            <div class="absolute top-3 left-3 w-4 h-4 bg-red-500 rounded-full shadow-md animate-pulse"></div>
+
+            <!-- Framing border for digital screen look -->
+            <div class="absolute inset-0 border-2 border-gray-600 rounded-2xl pointer-events-none"></div>
+
+            <!-- Pokémon image inside -->
+            <img src="{{ image_url }}" alt="{{ name }}" class="w-80 h-80 object-contain rounded-lg shadow-lg" />
+        </div>
+        </div>
+
+
+      <!-- Right: Pokémon Info -->
+      <div class="w-full md:w-1/2">
+        <h2 class="text-4xl font-extrabold text-red-600 mb-2">{{ name }}</h2>
+
+        <!-- Pokémon Types -->
+        <!-- <h3 class="text-xl font-semibold text-gray-800 mb-2">Type:</h3> -->
+        <div class="flex flex-wrap gap-2 mb-6">
+        {% for type in types %}
+            <span class="bg-gradient-to-r from-green-300 to-blue-300 text-sm font-bold text-white px-3 py-1 rounded-full shadow-lg uppercase tracking-wide">
+            {{ type }}
+            </span>
+        {% endfor %}
+        </div>
+
+        <!-- Description -->
+        <p class="text-gray-700 text-lg mb-6 leading-relaxed">{{ description }}</p>
+
+        <!-- Abilities -->
+        <h3 class="text-xl font-semibold text-gray-800 mb-1">Abilities:</h3>
+        <div class="flex flex-wrap gap-2 mb-6">
+          {% for ability in abilities %}
+            <button 
+              onclick="fetchAndShowInfo('{{ ability }}', 'ability')" 
+              class="bg-purple-200 text-purple-900 font-medium text-sm px-3 py-1 rounded-lg border border-purple-400 shadow-sm capitalize hover:opacity-90 transition">
+              {{ ability }}
+            </button>
+          {% endfor %}
+        </div>
+
+        <!-- Moves -->
+        <h3 class="text-xl font-semibold text-gray-800 mb-1">Top Moves:</h3>
+        <div class="grid grid-cols-3 gap-2 mb-6">
+          {% for move in moves %}
+            <button 
+              onclick="fetchAndShowInfo('{{ move }}', 'move')" 
+              class="bg-yellow-100 text-yellow-800 font-semibold text-sm text-center px-3 py-2 rounded-md border-l-4 border-yellow-400 shadow-md capitalize hover:opacity-90 transition">
+              {{ move }}
+            </button>
+          {% endfor %}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 mt-4">
+          {% if cry_url %}
+          <button onclick="document.getElementById('cryAudio').play()" class="bg-red-500 text-white px-5 py-2 rounded-lg shadow hover:bg-red-600 transition duration-300 w-full sm:w-auto">
+            🔊 Play Cry
+          </button>
+          <audio id="cryAudio" src="{{ cry_url }}"></audio>
+          {% endif %}
+
+          <a href="/pokedex/" class="bg-yellow-400 text-black px-5 py-2 rounded-lg shadow hover:bg-yellow-500 transition duration-300 w-full sm:w-auto text-center">
+            🔁 Try Another
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Info Modal -->
+<div id="infoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white p-6 rounded shadow-xl max-w-md w-full relative">
+    <button onclick="closeModal()" class="absolute top-2 right-3 text-gray-500 hover:text-black">&times;</button>
+    <h4 id="modalTitle" class="text-xl font-bold text-red-600 mb-2"></h4>
+    <p id="modalContent" class="text-gray-700"></p>
+  </div>
+</div>
+
+<script>
+  function fetchAndShowInfo(name, type) {
+    fetch(`https://pokeapi.co/api/v2/${type}/${name.toLowerCase()}`)
+      .then(response => response.json())
+      .then(data => {
+        let description = data.effect_entries?.find(e => e.language.name === 'en')?.effect || 
+                          data.flavor_text_entries?.find(e => e.language.name === 'en')?.flavor_text || 
+                          "No description available.";
+
+        document.getElementById("modalTitle").textContent = name;
+        document.getElementById("modalContent").textContent = description;
+        document.getElementById("infoModal").classList.remove("hidden");
+        document.getElementById("infoModal").classList.add("flex");
+      });
+  }
+
+  function closeModal() {
+    document.getElementById("infoModal").classList.add("hidden");
+    document.getElementById("infoModal").classList.remove("flex");
+  }
+</script>
+
+
+</body>
+</html>

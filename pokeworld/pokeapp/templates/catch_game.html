@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PokéCatcher</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <style>
+    .glass {
+      backdrop-filter: blur(8px);
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-yellow-100 via-red-100 to-pink-100 min-h-screen font-sans antialiased relative">
+
+  <!-- Navbar -->
+  <nav class="bg-red-600 p-4 text-white flex justify-between items-center shadow-lg sticky top-0 z-50">
+    <a href="/" class="text-4xl font-bold tracking-wide">PokéWorld</a>
+    <div>
+      <a href="/pokedex" class="text-black text-xl hover:underline mx-3">PokéDex</a>
+      <a href="/catch" class="text-black text-xl hover:underline mx-3 font-bold">PokéCatcher</a>
+      <a href="/leaderboard" class="text-black text-xl hover:underline mx-3">LeaderBoard</a>
+      <a href="/logout" class="text-black text-xl hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Section -->
+  <div class="container mx-auto px-6 py-14 text-center">
+    <h2 class="text-5xl font-extrabold text-red-600 drop-shadow-md mb-4">Who's That Pokémon?</h2>
+    <p class="text-lg text-gray-800 font-medium mb-10">A wild Pokémon has appeared! You have <span class="text-red-600 font-bold">2 tries</span> to guess it.</p>
+
+    <!-- Silhouette Card -->
+    <div class="relative w-80 h-80 mx-auto rounded-2xl border-8 border-yellow-400 shadow-2xl bg-white overflow-hidden flex items-center justify-center">
+      <img src="{{ silhouette_url }}" alt="Pokémon Silhouette" class="w-full h-full object-contain filter invert" />
+      <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-10 pointer-events-none"></div>
+    </div>
+
+    <!-- Guess Form -->
+    <form method="POST" action="/catch/submit/" class="mt-10 flex flex-col items-center space-y-5">
+      {% csrf_token %}
+      <input 
+        type="text" 
+        name="guess" 
+        placeholder="Enter Pokémon name..." 
+        class="w-72 px-5 py-3 rounded-full border-2 border-yellow-400 bg-white shadow-inner focus:outline-none focus:ring-4 focus:ring-yellow-300 text-center text-lg"
+      />
+      <button 
+        type="submit" 
+        class="bg-gradient-to-r from-red-500 to-yellow-400 hover:from-red-600 hover:to-yellow-500 text-white font-bold px-10 py-3 rounded-full shadow-xl transition-transform transform hover:scale-110"
+      >
+        🎯 Catch!
+      </button>
+    </form>
+
+    <!-- Messages -->
+    {% if messages %}
+      <div class="mt-8 space-y-2">
+        {% for message in messages %}
+          <p class="text-lg font-semibold text-red-700 drop-shadow-sm">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Pokéball Decorations -->
+  <div class="fixed bottom-6 right-6 opacity-40 animate-bounce">
+    <img src="https://img.icons8.com/color/96/pokeball-2.png" class="w-16 h-16" />
+  </div>
+  <div class="fixed bottom-6 left-6 opacity-30 animate-spin-slow">
+    <img src="https://img.icons8.com/color/96/great-ball.png" class="w-14 h-14" />
+  </div>
+
+</body>
+</html>

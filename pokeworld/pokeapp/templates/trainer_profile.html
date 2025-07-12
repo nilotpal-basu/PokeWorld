@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trainer Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gradient-to-br from-yellow-100 via-pink-100 to-red-100 min-h-screen font-sans antialiased">
+
+  <!-- Navbar -->
+  <nav class="bg-red-600 p-4 text-white flex justify-between items-center shadow-lg">
+    <a href="/" class="text-4xl font-bold">PokéWorld</a>
+    <div>
+      <a href="/pokedex" class="text-black text-xl hover:underline mx-3">PokéDex</a>
+      <a href="/catch" class="text-black text-xl hover:underline mx-3">PokéCatcher</a>
+      <a href="/leaderboard" class="text-black text-xl hover:underline mx-2">LeaderBoard</a>
+      <a href="/logout" class="text-black text-xl hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Layout -->
+  <div class="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <!-- Profile Card -->
+    <div class="col-span-1 bg-white border-4 border-yellow-300 rounded-2xl p-6 shadow-lg flex flex-col items-center text-center space-y-4">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{ trainer.img_number }}.png"
+           alt="Trainer Avatar"
+           class="w-28 h-28 rounded-full border-4 border-red-500 bg-white p-1 shadow-xl" />
+      <h2 class="text-3xl font-extrabold text-red-700 tracking-wide">{{ trainer.username }}</h2>
+      <p class="text-lg text-gray-700">Trainer Tier:
+        <span class="font-bold text-yellow-600">
+          {{ trainer.trainer_tier }}
+        </span>
+      </p>
+      <p class="text-lg text-gray-800">Pokémon Caught:
+        <span class="text-red-600 font-bold text-2xl">{{ trainer.poke_caught }}</span>
+      </p>
+      <a href="/catch/" class="mt-4 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold px-6 py-2 rounded-full shadow-md transition transform hover:scale-105">
+        🎯 Catch More!
+      </a>
+    </div>
+
+    <!-- Right Section: Search + Recent Catches -->
+    <div class="col-span-2 flex flex-col space-y-6">
+
+      <!-- Search Card -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg border-4 border-pink-300 text-center">
+        <form method="GET" action="/profile/" class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <input type="text" name="search" placeholder="Search a Pokémon..." value="{{ search_query }}"
+                 class="w-full sm:w-2/3 px-4 py-2 rounded-full border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-300 text-center">
+          <button type="submit"
+                  class="px-6 py-2 bg-red-500 text-white rounded-full font-semibold hover:bg-red-600 transition">
+            🔍 Search
+          </button>
+        </form>
+
+        {% if search_query %}
+          <div class="mt-4 text-xl font-semibold">
+            {% if searched_pokemon %}
+              {% if has_caught %}
+                ✅ You have caught <a href="/pokedex/{{ searched_pokemon.name|lower }}" class="hover:underline"><span class="text-green-600">{{ searched_pokemon.name|title }}</span></a>!
+              {% else %}
+                ❌ You have not caught <a href="/pokedex/{{ searched_pokemon.name|lower }}" class="hover:underline"><span class="text-red-600">{{ searched_pokemon.name|title }}</span></a> yet.
+              {% endif %}
+            {% else %}
+              <p class="text-red-600">No such Pokémon named "{{ search_query }}" found.</p>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Recent Catches Card -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg border-4 border-blue-300">
+        <h3 class="text-2xl font-bold text-blue-700 mb-4 text-center">Recently Caught Pokémon</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ">
+          {% for entry in recent_catches %}
+            <a href="/pokedex/{{ entry.pokemon.name|lower }}"
+               class="bg-gradient-to-br from-white to-yellow-50 rounded-xl p-4 shadow-md hover:shadow-xl transition transform hover:scale-105 text-center">
+              <img src="https://img.pokemondb.net/artwork/{{ entry.pokemon.name|lower }}.jpg"
+                   alt="{{ entry.pokemon.name }}"
+                   class="w-24 h-24 object-contain mx-auto mb-2 rounded-md" />
+              <p class="font-bold text-lg text-gray-800">{{ entry.pokemon.name|title }}</p>
+            </a>
+          {% empty %}
+            <p class="text-gray-600 col-span-full text-center">No Pokémon caught yet!</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

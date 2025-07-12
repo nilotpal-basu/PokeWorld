@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PokéWorld</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gradient-to-r from-red-100 to-yellow-100 min-h-screen font-sans antialiased">
+
+  <!-- Navbar -->
+  <nav class="bg-red-600 p-4 text-white flex justify-between items-center shadow">
+    <a href="/" class="text-4xl font-bold">PokéWorld</a>
+    <div>
+      <a href="/pokedex" class="text-black text-xl hover:underline mx-3">PokéDex</a>
+      <a href="/catch" class="text-black text-xl hover:underline mx-3">PokéCatcher</a>
+      <a href="/leaderboard" class="text-black text-xl hover:underline mx-2">LeaderBoard</a>
+      <a href="/logout" class="text-black text-xl hover:underline ">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Welcome Section -->
+  <div class="container mx-auto px-4 py-10 text-center">
+    <h2 class="text-4xl sm:text-5xl font-bold text-gray-800 mb-2">Welcome back, <span class="text-red-600">{{ user.username }}</span>!</h2>
+    <!-- <p class="text-lg text-gray-700 mb-6">You're a proud <span class="bg-yellow-300 text-black font-semibold px-3 py-1 rounded">{{ user.trainer_tier }}</span> tier Trainer.</p> -->
+     <p class="text-xl text-gray-700 mb-6 font-bold">Gotta Catch 'Em All</p>
+    <div class="w-24 h-1 mx-auto bg-red-500 rounded mb-4"></div>
+  </div>
+
+  <!-- Trainer Profile Card -->
+  <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8 mb-12 transition transform hover:scale-105">
+    <a href="/profile" class="flex items-center space-x-6">
+      <img src={{pp}} alt="Trainer Avatar" class="w-24 h-24 rounded-full border-4 border-red-400" />
+      <div class="text-left">
+        <h3 class="text-2xl font-semibold text-gray-800">Trainer: {{ user.username }}</h3>
+        <p class="text-gray-600">Trainer Tier: <span class="font-semibold text-red-600">{{ user.trainer_tier }}</span></p>
+        <p class="text-gray-600 mt-1">Pokémon Caught: <span class="font-semibold">{{ user.poke_caught }}</span></p>
+      </div>
+    </a>
+  </div>
+
+  <!-- Action Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto px-4 mb-20">
+    <a href="/pokedex" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 text-center">
+      <img src="https://img.icons8.com/color/96/pokedex.png" class="mx-auto mb-3" />
+      <h4 class="text-xl font-bold text-red-600">PokéDex</h4>
+      <p class="text-gray-600 mt-2">Explore detailed Pokémon data.</p>
+    </a>
+
+    <a href="/catch" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 text-center">
+      <img src="https://img.icons8.com/color/96/pokeball-2.png" class="mx-auto mb-3" />
+      <h4 class="text-xl font-bold text-red-600">PokéCatcher</h4>
+      <p class="text-gray-600 mt-2">Catch new Pokémon and grow your collection.</p>
+    </a>
+
+    <a href="/leaderboard" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition transform hover:scale-105 text-center">
+      <img src="https://img.icons8.com/emoji/96/trophy-emoji.png" class="mx-auto mb-3" />
+      <h4 class="text-xl font-bold text-red-600">LeaderBoard</h4>
+      <p class="text-gray-600 mt-2">See how you rank among trainers.</p>
+    </a>
+  </div>
+
+</body>
+</html>
