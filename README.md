@@ -26,29 +26,28 @@ Here are some snapshots of key features and pages in the PokeWorld application:
 ### 🏠 Landing Page
 A welcoming homepage where users explore core features like the Pokédex and Catcher game.
 
-![Landing Page](<img width="1919" height="926" alt="image" src="https://github.com/user-attachments/assets/1a08bf20-f5c8-4275-bf05-d1bef56e78d4" />)
+![Landing Page](screenshots/landing_page.png)
 
 ---
 
 ### 👤 Profile Page
 Displays trainer-specific details such as the total number of Pokémon caught and their collection.
 
-![Profile Page](<img width="1919" height="901" alt="image" src="https://github.com/user-attachments/assets/b8d679a1-4c95-4034-b480-795c9e2063e3" />)
+![Profile Page](screenshots/profile_page.png)
 
 ---
 
 ### 🧾 Pokédex Page
 Shows detailed information about a classified Pokémon using data from the PokéAPI.
 
-![Pokedex Page](<img width="1919" height="931" alt="image" src="https://github.com/user-attachments/assets/1df497cb-ad51-411a-8d6a-8e2f114984e7" />)
+![Pokedex Page](screenshots/pokedex.png)
 
 ---
 
 ### 🎮 Pokémon Catcher Game
 Interactive guessing game where the trainer tries to identify Pokémon by their silhouette.
 
-![Pokémon Catcher](<img width="1919" height="927" alt="image" src="https://github.com/user-attachments/assets/9f7962ca-6924-4c9c-93ac-541e16f727a9" />
-)
+![Pokémon Catcher](screenshots/pokecatcher.png)
 
 ---
 
